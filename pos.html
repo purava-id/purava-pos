@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POS PURAVA</title>
+<style>
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 10px;
+}
+
+h2 { text-align: center; }
+
+.menu {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.btn {
+  padding: 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #222;
+  color: #fff;
+}
+
+.cart { margin-top: 15px; }
+
+.cart div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.total {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.pay {
+  margin-top: 12px;
+  padding: 14px;
+  width: 100%;
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
+
+.close-nota {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* jangan ikut ke-print */
+@media print {
+  .close-nota {
+    display: none;
+  }
+
+.menu, .cart, .btn, .pay {
+  pointer-events: auto !important;
+}
+
+}
+
+/* ===== NOTA DEFAULT (ANTI TOUCH BLOCKER) ===== */
+.nota {
+  display: none !important;
+  pointer-events: none;
+}
+
+/* ===== SAAT PREVIEW ===== */
+body.preview-nota .nota {
+  display: block !important;
+  pointer-events: auto;
+  max-width: 380px;
+  margin: 20px auto;
+}
+
+
+/* ===== NOTA DEFAULT (HILANG TOTAL) ===== */
+.nota {
+  display: none !important;
+}
+
+/* ===== MODE PREVIEW (HP / SCREENSHOT) ===== */
+body.preview-nota .nota {
+  display: block !important;
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 16px;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+/* kunci: saat preview, app TIDAK nerima klik */
+body.preview-nota #app {
+  pointer-events: none;
+}
+
+/* ===== PRINT ONLY ===== */
+html:not(.ios) @media print {
+  body > *:not(.nota) {
+    display: none;
+  }
+
+  .nota {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 48mm;
+  }
+}
+
+
+</style>
+
+ <!-- CSS KHUSUS PRINT (PC / Laptop SAJA) -->
+  <link rel="stylesheet" href="print.css" media="print">
+
+</head>
+
+<body>
+
+<div id="app">
+
+<h2>PURAVA POS</h2>
+
+<div class="menu">
+  <button class="btn" onclick="add('Shiny Sunrise',30000)">Shiny Sunrise</button>
+  <button class="btn" onclick="add('Skin Elixir',30000)">Skin Elixir</button>
+  <button class="btn" onclick="add('Green Glow',30000)">Green Glow</button>
+  <button class="btn" onclick="add('Blood Builder',30000)">Blood Builder</button>
+  <button class="btn" onclick="add('Golden Immunity',30000)">Golden Immunity</button>
+  <button class="btn" onclick="add('Heart Guard',30000)">Heart Guard</button>
+</div>
+
+<div class="cart" id="cart"></div>
+
+<div class="total" id="subtotal">Subtotal: 0</div>
+
+<label>Ongkir</label>
+<input type="number" id="ongkir" value="0">
+
+<label>Metode Bayar</label>
+<select id="metode">
+  <option>CASH</option>
+  <option>COD</option>
+  <option>Transfer</option>
+  <option>QRIS</option>
+</select>
+
+<button
+  class="pay"
+  type="button"
+  onclick="submitOrder()"
+>
+  BAYAR
+</button>
+
+
+<script>
+const endpoint = "https://script.google.com/macros/s/AKfycbxAYvB5grkyJn66f7KOHq9e0HEQDQDU91W8n-wLljR0L8PJJr3XqnDn4UYMvW1Wiw/exec";
+let cart = {};
+
+function add(name, price) {
+  if (!cart[name]) {
+    cart[name] = { qty: 1, price: price };
+  } else {
+    cart[name].qty++;
+  }
+  render();
+}
+
+function render() {
+  const c = document.getElementById("cart");
+  c.innerHTML = "";
+  let subtotal = 0;
+
+  for (let item in cart) {
+    let row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.justifyContent = "space-between";
+    row.style.alignItems = "center";
+
+    row.innerHTML = `
+      <span>${item}</span>
+      <div>
+        <button onclick="minus('${item}')">−</button>
+        ${cart[item].qty}
+        <button onclick="plus('${item}')">+</button>
+        <button onclick="removeItem('${item}')">✕</button>
+      </div>
+    `;
+
+    c.appendChild(row);
+    subtotal += cart[item].qty * cart[item].price;
+  }
+
+  document.getElementById("subtotal").innerText = "Subtotal: " + subtotal;
+}
+
+function submitOrder() {
+  let items = [];
+  let subtotal = 0;
+
+  for (let item in cart) {
+    items.push({
+      nama: item,
+      qty: cart[item].qty,
+      harga: cart[item].price
+    });
+    subtotal += cart[item].qty * cart[item].price;
+  }
+
+  // ❗ VALIDASI 1 — belum ada pesanan
+  if (items.length === 0) {
+    alert("Belum ada pesanan");
+    return;
+  }
+
+  const metode = document.getElementById("metode").value;
+  const ongkirInput = document.getElementById("ongkir").value;
+
+  // ❗ VALIDASI 2 — metode bayar belum dipilih
+  if (!metode) {
+    alert("Pilih metode pembayaran");
+    return;
+  }
+
+  // ❗ VALIDASI 3 — ongkir kosong → auto 0
+  let ongkir = parseInt(ongkirInput);
+  if (isNaN(ongkir)) ongkir = 0;
+
+  const total = subtotal + ongkir;
+
+  // ✅ BARU KIRIM DATA
+const payload = {
+  items: JSON.stringify(items),
+  subtotal: subtotal,
+  ongkir: ongkir,
+  total: total,
+  metode: metode
+};
+
+const formData = new URLSearchParams(payload);
+
+fetch(endpoint, {
+  method: "POST",
+  body: formData
+})
+.then(res => res.json())
+.then(data => {
+  // ===== ISI NOTA =====
+  const itemsDiv = document.getElementById("nota-items");
+  itemsDiv.innerHTML = "";
+
+  items.forEach(i => {
+    itemsDiv.innerHTML += `
+      <div style="display:flex; justify-content:space-between;">
+        <span>${i.nama} x${i.qty}</span>
+        <span>${i.qty * i.harga}</span>
+      </div>
+    `;
+  });
+
+  document.getElementById("nota-summary").innerHTML = `
+    <div style="display:flex; justify-content:space-between;">
+      <span>Subtotal</span><span>${subtotal}</span>
+    </div>
+    <div style="display:flex; justify-content:space-between;">
+      <span>Ongkir</span><span>${ongkir}</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-weight:bold;">
+      <span>TOTAL</span><span>${total}</span>
+    </div>
+    <div>No Nota: ${data.nota}</div>
+    <div>Bayar: ${metode}</div>
+  `;
+
+  document.body.classList.add("preview-nota");
+
+// kalau mau PRINT nanti, manual aja
+// window.print();
+
+
+  cart = {};
+  render();
+  document.getElementById("ongkir").value = "";
+})
+.catch(err => {
+  alert("Gagal kirim data ke server");
+  console.error(err);
+});
+}
+
+
+
+function plus(item) {
+  cart[item].qty++;
+  render();
+}
+
+function minus(item) {
+  cart[item].qty--;
+  if (cart[item].qty <= 0) {
+    delete cart[item];
+  }
+  render();
+}
+
+function removeItem(item) {
+  delete cart[item];
+  render();
+}
+
+function closeNota() {
+  document.body.classList.remove("preview-nota");
+}
+
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+if (isIOS) {
+  document.documentElement.classList.add("ios");
+}
+
+</script>
+
+<div id="nota" class="nota">
+
+  <!-- tombol tutup preview -->
+ <button
+  onclick="closeNota()"
+  style="width:100%; padding:12px; margin-bottom:12px;"
+>
+  ✕ Tutup Nota
+</button>
+
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td align="center">
+        <img src="logo-thermal.png" width="150">
+      </td>
+    </tr>
+  </table>
+
+  <div style="text-align:center; font-weight:bold;">PURAVA</div>
+  <div style="text-align:center;">Cold Pressed Juice</div>
+  <div style="text-align:center;">--------------------------</div>
+
+  <div id="nota-items"></div>
+
+  <div>--------------------------</div>
+
+  <div id="nota-summary"></div>
+
+  <div style="text-align:center; margin-top:8px;">
+    Terima kasih<br>
+    <i>Your Daily Pure Ritual</i>
+  </div>
+
+</div>
+
+
+
+
+</body>
+</html>
