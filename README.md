@@ -69,6 +69,21 @@ input, select {
   font-size: 14px;
 }
 
+ /* ===== FIX LOGO NOTA ===== */
+    #nota img {
+      display: block;
+      margin: 0 auto 4px auto;
+      max-width: 100%;
+      max-height: 40px;
+      height: auto; 
+
+      #nota {
+  font-family: monospace;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+  
 /* jangan ikut ke-print */
 @media print {
   .close-nota {
@@ -359,7 +374,7 @@ if (isIOS) {
   <table width="100%" cellpadding="0" cellspacing="0">
     <tr>
       <td align="center">
-        <img src="logo-thermal.png" width="150">
+        <img src="logo-thermal.png" alt="PURAVA Logo">
       </td>
     </tr>
   </table>
@@ -385,4 +400,5 @@ if (isIOS) {
 
 
 </body>
+
 </html>
