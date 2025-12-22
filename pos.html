@@ -76,9 +76,9 @@ input, select {
   margin: 0 auto 6px auto;
 
   width: auto;          /* ⬅️ JANGAN 100% */
-  max-width: 80%;       /* ⬅️ AMAN BUAT 58mm */
+  max-width: 70%;       /* ⬅️ AMAN BUAT 58mm */
   height: auto;         /* ⬅️ KUNCI RASIO */
-  max-height: 40px;     /* ⬅️ BATAS TINGGI */
+  max-height: 36px;     /* ⬅️ BATAS TINGGI */
   object-fit: contain; /* ⬅️ ANTI STRETCH */
 }
 
@@ -146,6 +146,12 @@ html:not(.ios) @media print {
     top: 0;
     width: 48mm;
   }
+
+  .divider {
+  border-top: 1px dashed #000;
+  margin: 6px 0;
+  width: 100%;
+}
 }
 
 
@@ -381,11 +387,11 @@ if (isIOS) {
 
   <div style="text-align:center; font-weight:bold;">PURAVA</div>
   <div style="text-align:center;">Cold Pressed Juice</div>
-  <div style="text-align:center;">--------------------------</div>
+  <div class="divider"></div>
 
   <div id="nota-items"></div>
 
-  <div>--------------------------</div>
+<div class="divider"></div>
 
   <div id="nota-summary"></div>
 
@@ -402,4 +408,5 @@ if (isIOS) {
 </body>
 
 </html>
+
 
