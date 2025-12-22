@@ -116,22 +116,20 @@ body.preview-nota .nota {
   display: none !important;
 }
 
-/* ===== MODE PREVIEW (HP / SCREENSHOT) ===== */
-body.preview-nota .nota {
-  display: block !important;
-  position: fixed;
-  inset: 0;
-  background: #fff;
-  z-index: 9999;
-  overflow-y: auto;
-  padding: 16px;
-  font-family: monospace;
-  font-size: 11px;
+/* ===== PREVIEW NOTA (LAYAR / HP) ===== */
+#nota {
+  display: none;
 }
 
-/* kunci: saat preview, app TIDAK nerima klik */
-body.preview-nota #app {
-  pointer-events: none;
+body.preview-nota #nota {
+  display: block;
+  width: 360px;          /* ⬅️ LEBAR PREVIEW, BUKAN MM */
+  margin: 12px auto;
+  padding: 8px;
+  background: #fff;
+  font-family: monospace;
+  font-size: 11px;
+  line-height: 1.4;
 }
 
 /* ===== PRINT ONLY ===== */
@@ -147,11 +145,13 @@ html:not(.ios) @media print {
     width: 48mm;
   }
 
-  .divider {
-  border-top: 1px dashed #000;
-  margin: 6px 0;
+.divider {
   width: 100%;
+  height: 0;
+  border-top: 1px dashed #000;
+  margin: 8px 0;
 }
+
 }
 
 
