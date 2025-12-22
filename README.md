@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,20 +111,29 @@ body.preview-nota .nota {
   margin: 20px auto;
 }
 
+ /* ===== DIVIDER NOTA (PREVIEW + PRINT) ===== */
+  .divider {
+    width: 100%;
+    height: 1px;
+    margin: 8px 0;
+    background-image: repeating-linear-gradient(
+      to right,
+      #000 0,
+      #000 4px,
+      transparent 4px,
+      transparent 8px
+    );
 
-/* ===== NOTA DEFAULT (HILANG TOTAL) ===== */
-.nota {
-  display: none !important;
-}
 
-/* ===== PREVIEW NOTA (LAYAR / HP) ===== */
+/* ===== NOTA DEFAULT ===== */
 #nota {
   display: none;
 }
 
+/* ===== PREVIEW ===== */
 body.preview-nota #nota {
   display: block;
-  width: 360px;          /* ⬅️ LEBAR PREVIEW, BUKAN MM */
+  width: 360px;
   margin: 12px auto;
   padding: 8px;
   background: #fff;
@@ -144,13 +154,6 @@ html:not(.ios) @media print {
     top: 0;
     width: 48mm;
   }
-
-.divider {
-  width: 100%;
-  height: 0;
-  border-top: 1px dashed #000;
-  margin: 8px 0;
-}
 
 }
 
@@ -408,5 +411,6 @@ if (isIOS) {
 </body>
 
 </html>
+
 
 
