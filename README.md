@@ -155,6 +155,14 @@ html:not(.ios) @media print {
     width: 48mm;
   }
 
+  .qris {
+  display: block;
+  margin: 6px auto;
+  max-width: 140px;
+  height: auto;
+}
+
+
 }
 
 
@@ -370,18 +378,28 @@ document.getElementById("nota-customer").innerHTML =
     ? `<div style="margin-bottom:4px;">Customer : ${customer}</div>`
     : "";
 
-  const rekeningDiv = document.getElementById("nota-rekening");
+const rekeningDiv = document.getElementById("nota-rekening");
 
-if (metode === "Transfer" || metode === "QRIS") {
+if (metode === "Transfer") {
   rekeningDiv.innerHTML = `
     <div class="divider"></div>
     <div>Rekening:</div>
     <div>BCA 0091564245</div>
     <div>a/n Diajeng Nova L</div>
   `;
-} else {
+}
+else if (metode === "QRIS") {
+  rekeningDiv.innerHTML = `
+    <div class="divider"></div>
+    <div style="text-align:center;">SCAN QRIS</div>
+    <img src="qris.png" class="qris">
+    <div style="text-align:center;">a/n PURAVA</div>
+  `;
+}
+else {
   rekeningDiv.innerHTML = "";
 }
+
 
 
   document.body.classList.add("preview-nota");
@@ -486,6 +504,7 @@ if (isIOS) {
 </body>
 
 </html>
+
 
 
 
