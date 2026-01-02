@@ -408,12 +408,14 @@ if (isIOS) {
 
   <div style="text-align:center; font-weight:bold;">PURAVA</div>
   <div style="text-align:center;">Cold Pressed Juice</div>
-  <div class="divider"></div>
+  
 
   <div
   id="nota-customer"
-  style="text-align:center; margin-top:4px;"
+  style="text-align:center; font-weight:bold; margin-top:6px;"
 ></div>
+
+  <div class="divider"></div>
 
   <div id="nota-items"></div>
 
@@ -434,7 +436,6 @@ if (isIOS) {
 </body>
 
 </html>
-
 
 
 
