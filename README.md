@@ -187,6 +187,14 @@ html:not(.ios) @media print {
 <label>Ongkir</label>
 <input type="number" id="ongkir" value="0">
 
+<label>Customer</label>
+<input
+  type="text"
+  id="customer"
+  placeholder="Nama customer"
+/>
+
+
 <label>Metode Bayar</label>
 <select id="metode">
   <option>CASH</option>
@@ -265,6 +273,12 @@ function submitOrder() {
   }
 
   const metode = document.getElementById("metode").value;
+  const customer = document
+  .getElementById("customer")
+  .value
+  .trim();
+
+  
   const ongkirInput = document.getElementById("ongkir").value;
 
   // ❗ VALIDASI 2 — metode bayar belum dipilih
@@ -322,6 +336,10 @@ fetch(endpoint, {
     <div>No Nota: ${data.nota}</div>
     <div>Bayar: ${metode}</div>
   `;
+
+  document.getElementById("nota-customer").innerHTML =
+  customer ? `Customer : ${customer}` : "";
+
 
   document.body.classList.add("preview-nota");
 
@@ -391,6 +409,11 @@ if (isIOS) {
   <div style="text-align:center; font-weight:bold;">PURAVA</div>
   <div style="text-align:center;">Cold Pressed Juice</div>
   <div class="divider"></div>
+
+  <div
+  id="nota-customer"
+  style="text-align:center; margin-top:4px;"
+></div>
 
   <div id="nota-items"></div>
 
