@@ -399,7 +399,7 @@ else if (metode === "QRIS") {
     <div class="divider"></div>
     <div style="text-align:center;">SCAN QRIS</div>
     <img src="qris.png" class="qris">
-    <div style="text-align:center;">a/n PURAVA</div>
+    <div style="text-align:center;">a/n PURAVA COLD PRESSED JUICE</div>
   `;
 }
 else {
@@ -510,6 +510,7 @@ if (isIOS) {
 </body>
 
 </html>
+
 
 
 
