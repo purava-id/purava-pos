@@ -70,18 +70,25 @@ input, select {
   font-size: 14px;
 }
 
- /* ===== FIX LOGO NOTA ===== */
-   #nota img,
+ /* ===== LOGO NOTA SAJA ===== */
 #nota .logo {
   display: block;
   margin: 0 auto 6px auto;
 
-  width: auto;          /* ⬅️ JANGAN 100% */
-  max-width: 70%;       /* ⬅️ AMAN BUAT 58mm */
-  height: auto;         /* ⬅️ KUNCI RASIO */
-  max-height: 36px;     /* ⬅️ BATAS TINGGI */
-  object-fit: contain; /* ⬅️ ANTI STRETCH */
+  max-width: 70%;
+  max-height: 36px;
+  height: auto;
+  object-fit: contain;
 }
+
+  /* ===== QRIS ===== */
+#nota .qris {
+  display: block;
+  margin: 10px auto;
+  width: 140px;   /* ⬅️ BOLEH 140px KALAU MAU */
+  height: auto;
+}
+
 
 
   
@@ -92,7 +99,7 @@ input, select {
   }
 
   .qris {
-    width: 120px;
+    width: 140px;
   }
 
   
@@ -510,6 +517,7 @@ if (isIOS) {
 </body>
 
 </html>
+
 
 
 
