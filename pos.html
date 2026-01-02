@@ -91,6 +91,12 @@ input, select {
     display: none;
   }
 
+  .qris {
+    width: 120px;
+  }
+
+  
+
 .menu, .cart, .btn, .pay {
   pointer-events: auto !important;
 }
@@ -155,10 +161,10 @@ html:not(.ios) @media print {
     width: 48mm;
   }
 
-  .qris {
+.qris {
   display: block;
-  margin: 6px auto;
-  max-width: 140px;
+  margin: 8px auto;
+  width: 120px;     /* ⬅️ FIX WIDTH */
   height: auto;
 }
 
@@ -504,6 +510,7 @@ if (isIOS) {
 </body>
 
 </html>
+
 
 
 
