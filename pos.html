@@ -337,8 +337,14 @@ fetch(endpoint, {
     <div>Bayar: ${metode}</div>
   `;
 
-  document.getElementById("nota-customer").innerHTML =
-  customer ? `Customer : ${customer}` : "";
+document.getElementById("nota-customer").innerHTML =
+  customer
+    ? `<div style="display:flex; justify-content:space-between;">
+         <span>Customer</span>
+         <span>: ${customer}</span>
+       </div>`
+    : "";
+
 
 
   document.body.classList.add("preview-nota");
@@ -410,10 +416,11 @@ if (isIOS) {
   <div style="text-align:center;">Cold Pressed Juice</div>
   
 
-  <div
+<div
   id="nota-customer"
-  style="text-align:center; font-weight:bold; margin-top:6px;"
+  style="margin:6px 0;"
 ></div>
+
 
   <div class="divider"></div>
 
@@ -436,6 +443,7 @@ if (isIOS) {
 </body>
 
 </html>
+
 
 
 
