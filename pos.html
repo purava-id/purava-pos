@@ -339,10 +339,7 @@ fetch(endpoint, {
 
 document.getElementById("nota-customer").innerHTML =
   customer
-    ? `<div style="display:flex; justify-content:space-between;">
-         <span>Customer</span>
-         <span>: ${customer}</span>
-       </div>`
+    ? `<div style="margin-bottom:4px;">Customer : ${customer}</div>`
     : "";
 
 
@@ -443,6 +440,7 @@ if (isIOS) {
 </body>
 
 </html>
+
 
 
 
