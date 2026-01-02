@@ -187,6 +187,15 @@ html:not(.ios) @media print {
 <label>Ongkir</label>
 <input type="number" id="ongkir" value="0">
 
+ <label>Discount</label>
+<input
+  type="number"
+  id="discount"
+  value="0"
+  placeholder="Potongan harga"
+/>
+ 
+
 <label>Customer</label>
 <input
   type="text"
@@ -281,6 +290,8 @@ function submitOrder() {
   
   const ongkirInput = document.getElementById("ongkir").value;
 
+  const discountInput = document.getElementById("discount").value;
+
   // ❗ VALIDASI 2 — metode bayar belum dipilih
   if (!metode) {
     alert("Pilih metode pembayaran");
@@ -291,7 +302,12 @@ function submitOrder() {
   let ongkir = parseInt(ongkirInput);
   if (isNaN(ongkir)) ongkir = 0;
 
-  const total = subtotal + ongkir;
+  let discount = parseInt(discountInput);
+  if (isNaN(discount)) discount = 0;
+
+
+  const total = subtotal + ongkir - discount;
+
 
   // ✅ BARU KIRIM DATA
 const payload = {
@@ -324,24 +340,48 @@ fetch(endpoint, {
   });
 
   document.getElementById("nota-summary").innerHTML = `
-    <div style="display:flex; justify-content:space-between;">
-      <span>Subtotal</span><span>${subtotal}</span>
-    </div>
-    <div style="display:flex; justify-content:space-between;">
-      <span>Ongkir</span><span>${ongkir}</span>
-    </div>
-    <div style="display:flex; justify-content:space-between; font-weight:bold;">
-      <span>TOTAL</span><span>${total}</span>
-    </div>
-    <div>No Nota: ${data.nota}</div>
-    <div>Bayar: ${metode}</div>
-  `;
+  <div style="display:flex; justify-content:space-between;">
+    <span>Subtotal</span><span>${subtotal}</span>
+  </div>
+
+  ${
+    discount > 0
+      ? `<div style="display:flex; justify-content:space-between;">
+           <span>Discount</span><span>-${discount}</span>
+         </div>`
+      : ""
+  }
+
+  <div style="display:flex; justify-content:space-between;">
+    <span>Ongkir</span><span>${ongkir}</span>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; font-weight:bold;">
+    <span>TOTAL</span><span>${total}</span>
+  </div>
+
+  <div>No Nota: ${data.nota}</div>
+  <div>Bayar: ${metode}</div>
+`;
+
 
 document.getElementById("nota-customer").innerHTML =
   customer
     ? `<div style="margin-bottom:4px;">Customer : ${customer}</div>`
     : "";
 
+  const rekeningDiv = document.getElementById("nota-rekening");
+
+if (metode === "Transfer" || metode === "QRIS") {
+  rekeningDiv.innerHTML = `
+    <div class="divider"></div>
+    <div>Rekening:</div>
+    <div>BCA 0091564245</div>
+    <div>a/n Diajeng Nova L</div>
+  `;
+} else {
+  rekeningDiv.innerHTML = "";
+}
 
 
   document.body.classList.add("preview-nota");
@@ -353,6 +393,9 @@ document.getElementById("nota-customer").innerHTML =
   cart = {};
   render();
   document.getElementById("ongkir").value = "";
+  document.getElementById("discount").value = "";
+document.getElementById("customer").value = "";
+
 })
 .catch(err => {
   alert("Gagal kirim data ke server");
@@ -427,6 +470,9 @@ if (isIOS) {
 
   <div id="nota-summary"></div>
 
+  <div id="nota-rekening" style="margin-top:6px;"></div>
+
+
   <div style="text-align:center; margin-top:8px;">
     Terima kasih<br>
     <i>Your Daily Pure Ritual</i>
@@ -440,6 +486,8 @@ if (isIOS) {
 </body>
 
 </html>
+
+
 
 
 
