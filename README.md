@@ -199,6 +199,17 @@ html:not(.ios) @media print {
   <button class="btn" onclick="add('Blood Builder',30000)">Blood Builder</button>
   <button class="btn" onclick="add('Golden Immunity',30000)">Golden Immunity</button>
   <button class="btn" onclick="add('Heart Guard',30000)">Heart Guard</button>
+  <button class="btn" onclick="add('Purava Kind Hampers (4 Bottles)',140000)">
+  Purava Kind Hampers<br>(4 Bottles)<br>140.000
+</button>
+
+<button class="btn" onclick="add('Purava Care Hampers (6 Bottles)',200000)">
+  Purava Care Hampers<br>(6 Bottles)<br>200.000
+</button>
+
+<button class="btn" onclick="add('Purava Signature Hampers (8 Bottles)',260000)">
+  Purava Signature Hampers<br>(8 Bottles)<br>260.000
+</button>
 </div>
 
 <div class="cart" id="cart"></div>
@@ -517,6 +528,7 @@ if (isIOS) {
 </body>
 
 </html>
+
 
 
 
